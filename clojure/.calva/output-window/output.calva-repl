@@ -1,0 +1,165 @@
+; This is the Calva REPL Window.
+; It's just a file, really, with some special treatment from Calva.
+; Use it as a REPL input prompt if you like. (When the REPL is connected.)
+; TIPS: The keyboard shortcut `ctrl+alt+o r` shows and focuses this window
+; Please see https://calva.io/repl-window/ for more info.
+; Happy coding! ♥️
+
+; TIPS: As with any Clojure file when the REPL is connected:
+; - `alt+enter` evaluates the current top level form.
+; - `ctrl+enter` evaluates the current form.
+; Special for this file:
+; - `alt+up` and `alt+down` traverse up and down the REPL command history
+;    when the cursor is after the last contents at the prompt
+
+PLEASE NOTE
+We will update the default location of this file. 
+The new default location will be 
+  "<projectRootPath>/.calva/repl.calva-repl"
+For now the legacy path is used by default.
+To give yourself a smooth transition, you can opt in
+to the change, by configuring this setting as false: 
+  "calva.useLegacyReplWindowPath"
+and then add "**/.calva/repl.calva-repl" to your ".gitignore" file.
+
+
+This file is configured as the output destination for all REPL output.
+You can configure this with the setting:
+  "calva.outputDestinations"
+
+
+; Jacking in...
+; Connecting using "deps.edn" project type.
+; You can make Calva auto-select this.
+;   - See https://calva.io/connect-sequences/
+; 
+
+; Starting Jack-in Terminal: pushd /Users/andrew/Documents/Projects/languages/exercism/clojure ; clojure -Sdeps '{:deps {nrepl/nrepl {:mvn/version,"1.0.0"},cider/cider-nrepl {:mvn/version,"0.28.5"}}}' -M -m nrepl.cmdline --middleware "[cider.nrepl/cider-middleware]" ; popd
+; Using host:port localhost:64623 ...
+; Hooking up nREPL sessions ...
+; Connected session: clj
+; Evaluating code from settings: 'calva.autoEvaluateCode.onConnect.clj'
+nil
+clj꞉user꞉> 
+"Please see https://calva.io/output/#about-stdout-in-the-repl-window
+about why stdout printed to this file is prepended with `;` to be line comments."
+clj꞉user꞉> 
+; Jack-in done.
+clj꞉user꞉> 
+clj꞉exercism.sieve꞉> 
+(ns exercism.sieve)
+(defn sieve [n]
+  (let [primes (range 2 n)]
+    (loop [i 0
+           primes primes
+           result []]
+      (if (empty? primes)
+        result
+        (let [prime (first primes)
+              primes (rest primes)]
+          (recur (+ i prime) primes
+                 (conj result prime)))))))
+#'exercism.sieve/sieve
+clj꞉exercism.sieve꞉> 
+(sieve 11)
+[2 3 4 5 6 7 8 9 10]
+clj꞉exercism.sieve꞉> 
+; Syntax error compiling at (src/exercism/sieve.clj:12:18).
+; Unable to resolve symbol: i in this context
+clj꞉exercism.sieve꞉> 
+; Syntax error compiling at (src/exercism/sieve.clj:14:18).
+; Unable to resolve symbol: i in this context
+clj꞉exercism.sieve꞉> 
+#'exercism.sieve/sieve
+clj꞉exercism.sieve꞉> 
+(sieve 11)
+nil
+clj꞉exercism.sieve꞉> 
+(sieve 13)
+nil
+clj꞉exercism.sieve꞉> 
+#'exercism.sieve/sieve
+clj꞉exercism.sieve꞉> 
+(sieve 13)nclj꞉exercism.sieve꞉> 
+
+clj꞉exercism.sieve꞉> 
+#'exercism.sieve/sieve
+; Syntax error compiling at (src/exercism/sieve.clj:6:3).
+; Unable to resolve symbol: n in this context
+clj꞉exercism.sieve꞉> 
+#'exercism.sieve/sieve
+clj꞉exercism.sieve꞉> 
+; ERROR:
+#'exercism.sieve/sieve
+clj꞉exercism.sieve꞉> 
+(sieve 13)
+(2 3 4 5 6 7 8 9 10 11 12)
+clj꞉exercism.sieve꞉> 
+#'exercism.sieve/sieve
+clj꞉exercism.sieve꞉> 
+(sieve 13)
+(2 3 4 5 6 7 8 9 10 11 12)
+clj꞉exercism.sieve꞉> 
+#'exercism.sieve/filter-multiples
+clj꞉exercism.sieve꞉> 
+(filter 3 (sieve 13))
+; Error printing return value (ClassCastException) at clojure.core/filter$fn (core.clj:2834).
+; class java.lang.Long cannot be cast to class clojure.lang.IFn (java.lang.Long is in module java.base of loader 'bootstrap'; clojure.lang.IFn is in unnamed module of loader 'app')
+clj꞉exercism.sieve꞉> 
+(filter-multiples 3 (sieve 13))
+(2 4 5 7 8 10 11)
+clj꞉exercism.sieve꞉> 
+#'exercism.sieve/filter-multiples
+clj꞉exercism.sieve꞉> 
+(filter-multiples 2 (sieve 13))
+(3 5 7 9 11)
+clj꞉exercism.sieve꞉> #'exercism.sieve/filter-multiples
+clj꞉exercism.sieve꞉> 
+(filter-multiples 3 (sieve 13))
+; Execution error (ArityException) at exercism.sieve/eval7864 (REPL:118).
+; Wrong number of args (2) passed to: exercism.sieve/filter-multiples
+clj꞉exercism.sieve꞉> 
+(filter-multiples (sieve 13))
+(3 5 7 9 11)
+clj꞉exercism.sieve꞉> 
+#'exercism.sieve/sieve
+clj꞉exercism.sieve꞉> 
+(sieve 13)
+(3 5 7 9 11)
+clj꞉exercism.sieve꞉> 
+#'exercism.sieve/sieve
+clj꞉exercism.sieve꞉> 
+(sieve 13)
+[2 3 5 7 11]
+clj꞉exercism.sieve꞉> 
+(sieve 40)
+[2 3 5 7 11 13 17 19 23 29 31 37]
+clj꞉exercism.sieve꞉> 
+#'exercism.sieve/sieve
+clj꞉exercism.sieve꞉> 
+#'exercism.sieve/filter-multiples
+clj꞉exercism.sieve꞉> 
+#'exercism.sieve/filter-multiples
+clj꞉exercism.sieve꞉> 
+(sieve 40)
+[2 3 5 7 11 13 17 19 23 29 31 37]
+clj꞉exercism.sieve꞉> 
+(sieve 100)
+[2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97]
+clj꞉exercism.sieve꞉> 
+#'exercism.sieve/sieve
+clj꞉exercism.sieve꞉> 
+(sieve 100)
+[2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97]
+clj꞉exercism.sieve꞉> 
+#'exercism.sieve/sieve
+clj꞉exercism.sieve꞉> 
+#'exercism.sieve/sieve
+clj꞉exercism.sieve꞉> 
+(sieve 100)
+[2 3 5 7 11 13 17 19 23 29 31 37 41 43 47 53 59 61 67 71 73 79 83 89 97]
+clj꞉exercism.sieve꞉> 
+(sieve 7)
+[2 3 5 7]
+clj꞉exercism.sieve꞉> 
+; nREPL Connection was closed
