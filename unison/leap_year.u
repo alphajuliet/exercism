@@ -1,0 +1,6 @@
+leap.leap : Nat -> Boolean
+leap.leap = cases
+  year | (mod year 400 == 0) -> true
+  year | (mod year 4 == 0) && (mod year 100 != 0) -> true 
+  _ -> false
+
