@@ -1,0 +1,9 @@
+raindrops.convert : Nat -> Text
+raindrops.convert n = 
+  use Nat mod toText
+  use Text isEmpty ++
+  mod3 = if mod n 3 == 0 then "Pling" else ""
+  mod5 = if mod n 5 == 0 then "Plang" else ""
+  mod7 = if mod n 7 == 0 then "Plong" else ""
+  output = mod3 ++ mod5 ++ mod7
+  if isEmpty output then toText n else output
