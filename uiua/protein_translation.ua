@@ -1,5 +1,5 @@
 # Protein translation
-Triplets ← ⊜∘\+=0◿3 ⇡⧻.
+Triplets ← ⍉⊕∘◿3⇡⧻.
 
 Codon ← ⍣(
   "Methionine" °"AUG"
