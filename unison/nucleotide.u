@@ -1,0 +1,25 @@
+-- nucleotide.u
+
+nucleotide.frequency : [Char] -> Map Char Nat
+nucleotide.frequency xs =
+  initMap : Map Char Nat
+  initMap = Map.fromList [(?A, 0), (?C, 0), (?G, 0), (?T, 0)]
+  List.foldRight
+    (x acc -> Map.unionWith (+) (Map.fromList [(x, 1)]) acc)
+    initMap
+    xs
+
+nucleotide.charFrequencies : Text -> Map Text Nat
+nucleotide.charFrequencies nn =
+  chars : [Char]
+  chars = Text.toCharList nn
+  Map.mapKeys Char.toText (frequency chars)
+
+nucleotide.nucleotideCounts : Text -> Optional (Map Text Nat)
+nucleotide.nucleotideCounts nn =
+  if Set.superset (Text.toSet "ACGT") (Text.toSet nn) then
+    Some (charFrequencies nn)
+  else
+    None
+
+-- The End

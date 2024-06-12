@@ -1,0 +1,17 @@
+-- darts.u
+use Nat
+
+darts.score : Float -> Float -> Nat
+darts.score x y = let
+  use Float + sqrt pow > <=
+  z = sqrt(pow x 2.0 + pow y 2.0)
+  match z with
+    a | a > 10.0 -> 0
+      | a > 5.0 -> 1
+      | a > 1.0 -> 5
+      | otherwise -> 10
+
+> darts.score 1.0 1.0
+> darts.score 0.5 0.5
+
+-- The End

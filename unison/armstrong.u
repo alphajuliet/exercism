@@ -1,0 +1,22 @@
+-- armstrong.u
+-- https://exercism.org/tracks/unison/exercises/armstrong-numbers
+
+use Nat
+
+armstrongNumbers.isArmstrongNumber : Nat -> Boolean
+armstrongNumbers.isArmstrongNumber number =
+  digits = toDigitList number
+  p = List.size digits
+  polysum = List.foldLeft (x y -> x + (pow y p)) 0 digits
+  number == polysum
+
+armstrongNumbers.toDigitList : Nat -> [Nat]
+armstrongNumbers.toDigitList n =
+  n |>
+  toText |>
+  Text.chunk 1 |>
+  List.map (fromText >> Optional.getOrElse 0)
+
+> isArmstrongNumber 154
+
+-- The End

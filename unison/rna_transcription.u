@@ -1,0 +1,34 @@
+use Optional
+
+rna.mapBase : Char -> Optional Char
+rna.mapBase nucl =
+  match nucl with
+    ?G -> Some ?C
+    ?C -> Some ?G
+    ?T -> Some ?A
+    ?A -> Some ?U
+    _  -> None
+
+rna.sequence : [Optional a] -> Optional [a]
+rna.sequence lst =
+  match lst with
+    [] -> Some []
+    None +: _ -> None
+    Some x +: mxs -> match (sequence mxs) with
+                 None -> None
+                 Some xs -> Some (x +: xs)
+                 
+rna.toRNA : Text -> Optional Text
+rna.toRNA dna =
+  use Text ++
+  dna |> 
+  Text.toCharList |>
+  List.map mapBase |>
+  sequence |>
+  Optional.map Text.fromCharList
+  
+> toRNA "CGTA"
+> toRNA ""
+> toRNA "XX"
+
+-- The End

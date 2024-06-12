@@ -1,0 +1,21 @@
+-- acronym.u
+
+acronym.allowedSplits : Char -> Boolean
+acronym.allowedSplits ch =
+    (ch Char.== ?-) || (ch Char.== ?\s)
+
+acronym.abbreviate : Text -> Text
+acronym.abbreviate txt =
+    txt |>
+    Text.toCharList |>
+    List.split allowedSplits |>
+    List.map (x -> List.filter (ch -> ch Char.!= ?_) x) |>
+    List.map (Text.fromCharList >> Text.take 1) |>
+    Text.join "" |>
+    toUppercase
+
+> abbreviate "the cat sat half-on the mat"
+> abbreviate "The road _Not_ taken"
+> abbreviate "Complementary metal-oxide semiconductor"
+
+-- The End

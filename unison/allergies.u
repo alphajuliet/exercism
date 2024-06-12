@@ -1,0 +1,33 @@
+-- allergies.u
+
+allergies.natToBinaryList : Nat -> Nat -> [Nat]
+allergies.natToBinaryList nbits x =
+  x |>
+  Nat.and 255 |>
+  Nat.toTextBase 2 |>
+  Optional.getOrElse "" |>
+  Text.leftPad nbits "0" |>
+  Text.toCharList |>
+  List.map (x -> (Char.toNat x - 48))
+
+
+allergies = ["eggs", "peanuts", "shellfish", "strawberries",
+             "tomatoes", "chocolate", "pollen", "cats"]
+
+allergies.allergicTo : Text -> Nat -> Boolean
+allergies.allergicTo allergen score =
+  List.contains allergen (allergies.list score)
+
+allergies.list : Nat -> [Text]
+allergies.list score =
+  score |>
+  allergies.natToBinaryList 8 |>
+  List.zip (List.reverse allergies) |>
+  List.filter (kv -> (Tuple.at2 kv) Nat.== 1) |>
+  List.map at1
+
+> 57 |> allergies.list
+
+> allergies.allergicTo "tomatoes" 57
+
+-- The End

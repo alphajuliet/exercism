@@ -1,0 +1,23 @@
+-- collatz.u
+
+use Nat
+-- use Optional
+
+step : Nat -> Nat
+step = cases
+  n | isEven n -> div n 2
+  n -> 3*n + 1
+
+collatzConjecture.steps : Nat -> Optional Nat
+collatzConjecture.steps n = 
+  if (n == 0) then
+    None
+  else
+    lst = List.unfold n (x ->
+      if (x Nat.!= 1) then
+        Some (x, step x)
+      else
+        None)
+    Some (List.size lst)
+
+> steps 12
