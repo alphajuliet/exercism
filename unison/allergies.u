@@ -11,7 +11,7 @@ allergies.natToBinaryList nbits x =
   List.map (x -> (Char.toNat x - 48))
 
 
-allergies = ["eggs", "peanuts", "shellfish", "strawberries",
+allergies.all = ["eggs", "peanuts", "shellfish", "strawberries",
              "tomatoes", "chocolate", "pollen", "cats"]
 
 allergies.allergicTo : Text -> Nat -> Boolean
@@ -22,7 +22,7 @@ allergies.list : Nat -> [Text]
 allergies.list score =
   score |>
   allergies.natToBinaryList 8 |>
-  List.zip (List.reverse allergies) |>
+  List.zip (List.reverse allergies.all) |>
   List.filter (kv -> (Tuple.at2 kv) Nat.== 1) |>
   List.map at1
 
