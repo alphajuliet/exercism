@@ -1,0 +1,47 @@
+-- Protein translation
+
+proteinTranslation.toProtein : Text -> Text
+proteinTranslation.toProtein = cases
+    "AUG" -> "Methionine"
+    "UUU" -> "Phenylalanine"
+    "UUC" -> "Phenylalanine"
+    "UUA" -> "Leucine"
+    "UUG" -> "Leucine"
+    "UCU" -> "Serine"
+    "UCC" -> "Serine"
+    "UCA" -> "Serine"
+    "UCG" -> "Serine"
+    "UAU" -> "Tyrosine"
+    "UAC" -> "Tyrosine"
+    "UGU" -> "Cysteine"
+    "UGC" -> "Cysteine"
+    "UGG" -> "Tryptophan"
+    _ -> "STOP"
+
+proteinTranslation.proteins : Text -> [Text]
+proteinTranslation.proteins rna =
+    (a, b) = splitAt 3 rna
+    match a with
+        "" -> []
+        s | (s == "UAA") || (s == "UAG") || (s == "UGA") -> []
+        _ -> toProtein a +: proteins b
+
+test> proteinTranslation.tests.t1 = check (proteins "" === [])
+test> proteinTranslation.tests.t2 = check (proteins "AUG" === ["Methionine"])
+test> proteinTranslation.tests.t3 = check (proteins "UAAUGG" === [])
+test> proteinTranslation.tests.t4 = check (proteins "AUGUUUUCU" === ["Methionine", "Phenylalanine", "Serine"])
+test> proteinTranslation.tests.t5 = check (proteins "AUGUUUUCUUAAAUG" === ["Methionine", "Phenylalanine", "Serine"])
+
+---
+
+{{ Split a string into a list of strings of a given length. }}
+protein_translation.split : Nat -> Text -> [Text]
+protein_translation.split = cases
+    _, "" -> []
+    n, s | (size s <= n) -> [s]
+    n, s -> List.singleton (at1 <| splitAt n s) ++ split n (Text.drop n s)
+
+test> protein_translation.tests.ex1 = check (List.isEmpty <| split 5 "")
+test> protein_translation.tests.ex2 = check ((split 4 "abc") === ["abc"])
+test> protein_translation.tests.ex3 = check ((split 2 "abcdef") === ["ab", "cd", "ef"])
+test> protein_translation.tests.ex4 = check ((split 3 "abcde") === ["abc", "de"])
