@@ -1,0 +1,12 @@
+pangram.isPangram : Text -> Boolean
+pangram.isPangram sentence = 
+    alpha = Set.fromText "abcdefghijklmnopqrstuvwxyz"
+    sentence
+        |> Text.toLowercase 
+        |> Set.fromText
+        |> Set.intersect alpha
+        |> Set.size
+        |> (==) 26
+
+> isPangram "The quick brown fox jumps over the lazy dog"
+
