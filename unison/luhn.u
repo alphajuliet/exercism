@@ -1,0 +1,28 @@
+{{ Double a number. If greater than 9 then subtract 9. }}
+luhn.double' : Nat -> Nat
+luhn.double' = cases 
+    n | n >= 5 -> n * 2 - 9
+      | otherwise -> n * 2
+
+{{ Convert a string to a list of digits. }}
+luhn.toDigits : Text -> List Nat
+luhn.toDigits string = 
+    digits = string |> toCharList |> List.filter (compose not isWhitespace) |> List.map (c -> Char.toNat c - 48)
+    if (List.filter (inRange 0 10) digits) !== digits then [] else digits
+
+luhn.isValid : Text -> Boolean
+luhn.isValid s =
+    digits = toDigits s |> List.reverse
+    match digits with 
+        d | size d <= 1 -> false
+          | otherwise -> 
+                alts = d |> List.skip 1
+                others = d |> List.drop 1 |> List.skip 1 |> List.map double'
+                List.interleave alts others |> List.foldLeft (+) 0 |> (x -> mod x 10) == 0
+
+test> luhn.tests.t1 = check (not <| isValid "5")
+test> luhn.tests.t2 = check (isValid "4539 3195 0343 6467")
+test> luhn.tests.t3 = check (isValid "055 444 285")
+test> luhn.tests.t4 = check (isValid "095 245 88")
+test> luhn.tests.t5 = check (not <| isValid "055b 444 285")
+
