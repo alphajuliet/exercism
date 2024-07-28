@@ -14,10 +14,10 @@ luhn.isValid : Text -> Boolean
 luhn.isValid s =
     digits = toDigits s |> List.reverse
     match digits with 
-        d | size d <= 1 -> false
+        _ | size digits <= 1 -> false
           | otherwise -> 
-                alts = d |> List.skip 1
-                others = d |> List.drop 1 |> List.skip 1 |> List.map double'
+                alts = digits |> List.skip 1
+                others = digits |> List.drop 1 |> List.skip 1 |> List.map double'
                 List.interleave alts others |> List.foldLeft (+) 0 |> (x -> mod x 10) == 0
 
 test> luhn.tests.t1 = check (not <| isValid "5")
