@@ -9,7 +9,6 @@ Z ← $ .*.*.
     $ .....
 
 Y ← ToMatrix Z
-Y
 
 # Neighbourhood
 N ← ☇1 ⊞⊂ .-1⇡3 # All the offsets as a 9x2 array
@@ -30,6 +29,6 @@ TranslateAdd Y 1_¯1
 TranslateAdd Y 1_0
 TranslateAdd Y 1_1
 
-×¬Y
++⊃(×¬|×9)Y
 
 # The End
