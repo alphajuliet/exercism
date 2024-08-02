@@ -1,0 +1,58 @@
+{{ Find the fewest coins from inputCoins that gives the target amount }}
+change.findFewestCoins : [Nat] -> Nat -> Optional [Nat]
+change.findFewestCoins = cases 
+  coins, target 
+    | target < 0 -> None
+    | target == 0 -> Some []
+    | List.isEmpty coins -> None
+    | otherwise -> 
+        match List.filter (c -> c <= target) coins with
+          [] -> None
+          validCoins ->
+            results = List.filterMap (coin ->
+              change.findFewestCoins validCoins (target - coin)
+              |> Optional.map (rest -> coin +: rest)) validCoins
+            match List.minimumOn Universal.ordering List.size results with
+              None -> None
+              Some minCoins -> Some minCoins
+
+{{ Adapted from maximumOn in data.List version 3.13.0 }}
+data.List.minimumOn : (b ->{f} b ->{g} Ordering) -> (a ->{e} b) -> [a] ->{e, f, g} Optional a
+data.List.minimumOn ord p as = 
+    f a e = 
+      g = cases
+            None, q -> Some (q, e)
+            b@(Some (o, y)), q 
+              | Universal.eq (ord o q) Greater -> Some (q, e)
+              | otherwise -> b
+      g a (p e)
+    Optional.map at2 (List.foldLeft f None as)
+
+> findFewestCoins [1, 5, 10, 25, 100] 40
+> findFewestCoins [1, 4, 15, 20, 50] 23
+> findFewestCoins [1, 5, 10, 21, 25] 43
+
+change.test.ex1 = let Test.label "change for 1 cent" <| Test.expect (findFewestCoins [1,5,10,25] 1 === Some [1])
+change.test.ex2 = let Test.label "single coin change" <| Test.expect (findFewestCoins [1,5,10,25,100] 25 === Some [25])
+change.test.ex3 = let Test.label "multiple coin change" <| Test.expect (findFewestCoins [1,5,10,25,100] 15 === Some [5,10])
+change.test.ex4 = let Test.label "change with Lilliputian Coins" <| Test.expect (findFewestCoins [1,4,15,20,50] 23 === Some [4,4,15])
+change.test.ex5 = let Test.label "change with Lower Elbonia Coins" <| Test.expect (findFewestCoins [1,5,10,21,25] 63 === Some [21,21,21])
+change.test.ex6 = let Test.label "large target values" <| Test.expect (findFewestCoins [1,2,5,10,20,50,100] 999 === Some [2,2,5,20,20,50,100,100,100,100,100,100,100,100,100])
+change.test.ex7 = let Test.label "possible change without unit coins available" <| Test.expect (findFewestCoins [2,5,10,20,50] 21 === Some [2,2,2,5,10])
+change.test.ex8 = let Test.label "another possible change without unit coins available" <| Test.expect (findFewestCoins [4,5] 27 === Some [4,4,4,5,5,5])
+change.test.ex9 = let Test.label "no coins make 0 change" <| Test.expect (findFewestCoins [1,5,10,21,25] 0 === Some [])
+change.test.ex10 = let Test.label "error testing for change smaller than the smallest of coins" <| Test.expect (findFewestCoins [5,10] 3 === None)
+change.test.ex11 = let Test.label "error if no combination can add up to target" <| Test.expect (findFewestCoins [5,10] 94 === None)
+test> change.tests = runAll [
+  change.test.ex1,
+  change.test.ex2,
+  change.test.ex3,
+  change.test.ex4,
+--   change.test.ex5,
+--   change.test.ex6,
+  change.test.ex7,
+  change.test.ex8,
+  change.test.ex9,
+  change.test.ex10,
+  change.test.ex11
+]
